@@ -1,0 +1,21 @@
+node{
+    stage('Scm Checkout'){
+    git credentialsId: 'gitcredentials', url: 'https://github.com/LahbiziSafae/DockerDemo'
+    }
+    stage('mvn package'){
+    sh 'mvn clean package'
+    }
+    stage('build docker image'){
+    sh 'docker build -t safaelah/my-app:2.0.0 .'
+    }
+    stage('push docker image'){
+    withCredentials([string(credentialsId: 'psswd', variable: 'dockerhubpsswd')]) {
+         sh "docker login -u safaelah -p ${dockerhubpsswd}"
+      }
+    sh 'docker push safaelah/my-app:2.0.0'
+    }
+    stage('Run Container on Dev Server'){
+    sh 'docker run -p 8081:8081 -d --name my-app-safae safaelah/my-app:2.0.0'
+    
+   }
+}
