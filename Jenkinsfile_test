@@ -14,7 +14,7 @@ node{
       }
     sh 'docker push safaelah/my-app:2.0.0'
     }
-    stage('Run Container on Dev Server'){
+    stage('deploy'){
     sh 'docker run -p 80:8080 -d --name my-app-safae safaelah/my-app:2.0.0'
     
    }
